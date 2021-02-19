@@ -47,7 +47,7 @@
 /*! Default log facility as in syslog.h */
 #define DEFAULT_LOG_FACILITY  LOG_SYSLOG
 /*! Default WebSock and HTTP port. */
-#define DEFAULT_WEBSOCK_PORT  8000
+#define DEFAULT_WEBSOCK_ADDRESS_PORT  "8000"
 /*! Polling interval. */
 #define POLL_SLEEP 1000
 
@@ -59,7 +59,7 @@
   memset(conf,0,sizeof(struct amiws_config)); \
   conf->log_level     = DEFAULT_LOG_LEVEL;    \
   conf->log_facility  = DEFAULT_LOG_FACILITY; \
-  conf->ws_port       = DEFAULT_WEBSOCK_PORT; \
+  conf->ws_address_port = NULL; \
   conf->size          = 0;                    \
   conf->head          = NULL;                 \
   conf->tail          = NULL;                 \
@@ -93,7 +93,7 @@ struct amiws_config {
   int size;                 /*!< Number of connections. */
   int log_facility;         /*!< Log facility for syslog. */
   int log_level;            /*!< Log level for syslog. */
-  int ws_port;              /*!< HTTP and WebSocket port to listen. */
+  char *ws_address_port;    /*!< HTTP and WebSocket address and port to listen. */
   char *web_root;           /*!< Path to static HTML document. */
   char *auth_domain;        /*!< Auth domain for WWW Digest Auth. */
   char *auth_file;          /*!< Auth file for WWW Digest Auth.

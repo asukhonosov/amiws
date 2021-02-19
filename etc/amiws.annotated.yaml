@@ -43,7 +43,7 @@ log_facility  : 40
 #--------------------------------------------------
 log_level     : 6
 
-# Web-Socket and HTTP port to listening.
+# Web-Socket and HTTP port to listen. Address:port notation can be used to bind to a specific IP address. 
 #
 # [OPTIONAL] DEFAULT value is 8000
 #--------------------------------------------------

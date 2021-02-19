@@ -124,11 +124,7 @@ void set_conf_param( struct amiws_config *conf,
     free(val);
 
   } else if (strcmp(key, "ws_port") == 0) {
-
-    conf->ws_port = intval(val);
-    if (conf->ws_port == -1)
-      fprintf(stderr, "ERROR: Invalid %s: '%s'.\n", key, val);
-    free(val);
+    conf->ws_address_port = val;
 
   } else if (strcmp(key, "web_root") == 0) {
 
@@ -277,12 +273,11 @@ static struct amiws_config *valid_conf(struct amiws_config *conf)
   int err = 0;
 
   if (  conf->log_level    == -1 ||
-        conf->log_facility == -1 ||
-        conf->ws_port      == -1) {
+        conf->log_facility == -1 ) {
     free_conf(conf);
     return NULL;
-  }
-
+  }  
+  if (conf->ws_address_port == NULL) conf->ws_address_port = strdup(DEFAULT_WEBSOCK_ADDRESS_PORT);
   // auth settings
   if ((conf->auth_domain != NULL || conf->auth_file != NULL) &&
       !is_valid_auth_settings(conf) ) err = 1;

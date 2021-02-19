@@ -33,7 +33,6 @@ struct mg_connection *nc_ws = NULL;
 
 void amiws_init(struct amiws_config *conf)
 {
-  char port_str[5]; memset(port_str, 0, sizeof(port_str));
   struct mg_bind_opts bind_opts;
 
   mg_mgr_init(&mgr, NULL);
@@ -47,8 +46,7 @@ void amiws_init(struct amiws_config *conf)
   }
   syslog (LOG_INFO, "AMI hosts connected.");
 
-  sprintf(port_str, "%d", conf->ws_port);
-  syslog (LOG_INFO, "Listening Web Socket port %d", conf->ws_port);
+  syslog (LOG_INFO, "Listening Web Socket on (address:)port %s", conf->ws_address_port);
 
   memset(&bind_opts, 0, sizeof(bind_opts));
 #if MG_ENABLE_SSL
@@ -59,10 +57,10 @@ void amiws_init(struct amiws_config *conf)
     syslog (LOG_DEBUG, "SSL cert file '%s', key file '%s'", bind_opts.ssl_cert, bind_opts.ssl_key);
   }
 #endif
-  nc_ws = mg_bind_opt(&mgr, port_str, websock_ev_handler, bind_opts);
+  nc_ws = mg_bind_opt(&mgr, conf->ws_address_port, websock_ev_handler, bind_opts);
 
   if(nc_ws == NULL) {
-    syslog (LOG_ERR, "Failed to bind port %s...", port_str);
+    syslog (LOG_ERR, "Failed to bind (address:)port %s...", conf->ws_address_port);
     exit(EXIT_FAILURE);
   }
   mg_set_protocol_http_websocket(nc_ws);
